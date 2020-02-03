@@ -4,11 +4,12 @@ CREATE TABLE IF NOT EXISTS members (
     password TEXT
 );
 
+DROP TABLE IF EXISTS expense;
 CREATE TABLE IF NOT EXISTS expense (
     id SERIAL PRIMARY KEY,
     user_id TEXT,
     category TEXT,
-    amount numeric(8,2),
+    amount numeric(12, 2),
     description TEXT,
     time_entered TIMESTAMPTZ DEFAULT Now()
 );

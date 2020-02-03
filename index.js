@@ -5,6 +5,7 @@ const express = require('express')
 const app = express()
 
 // tell your app to use the module
+app.use(express.static('public'))
 app.use(express.json());
 app.use(express.urlencoded({
     extended: true
@@ -13,13 +14,13 @@ app.use(express.urlencoded({
 //setup react
 // this line below, sets a layout look to your express project
 const reactEngine = require('express-react-views').createEngine();
-app.engine('jsx', reactEngine);
-
+app.set('views', __dirname + '/public');
 // this tells express where to look for the view files
 app.set('views', __dirname + '/views');
 
 // this line sets react to be the default view engine
 app.set('view engine', 'jsx');
+app.engine('jsx', reactEngine);
 
 // Set up method-override for PUT and DELETE forms
 const methodOverride = require('method-override')
@@ -63,12 +64,29 @@ app.get('/addExpense', (request, response) => {
 })
 
 app.get('/overview', (request, response) => {
+    response.redirect("/overview/0");
+})
+
+app.get('/overview/:offset', (request, response) => {
     // running this will let express to run home.handlebars file in your views folder
     let user_id = request.cookies.userId;
     let hashedCookie = sha256(SALT + user_id);
 
+    let offset = request.params.offset
+    let lowerOffset = parseInt(offset)
+    let upperOffset = parseInt(offset) + 1
+    var date = new Date();
+    date.setDate(date.getDate() + lowerOffset);
+    var dateString = date.toLocaleDateString();
+
     if (request.cookies.loggedIn === hashedCookie) {
-        const queryString = "SELECT * FROM expense WHERE user_id='" + request.cookies.userId + "'"
+        const queryString =
+        "SELECT * FROM expense " +
+        "WHERE user_id='" + request.cookies.userId + "' " +
+        "AND time_entered >= current_date + interval '"+ lowerOffset +" day' " +
+        "AND time_entered < current_date + interval '"+ upperOffset +" day' "+
+        "ORDER BY expense.time_entered DESC"
+
         pool.query(queryString, (err, result) => {
             if (err) {
                 console.error('query error:', err);
@@ -76,13 +94,16 @@ app.get('/overview', (request, response) => {
             } else {
                 let data = {
                     allExpense: result.rows,
+                    offset: offset,
+                    date: dateString
                 }
-                console.log(data);
+                // data.allExpense.sort()
+                // console.log(data);
                 response.render('overview', data)
             }
         })
     } else {
-        response.send("Please Log In")
+        response.redirect("/login")
     }
 })
 
@@ -217,7 +238,7 @@ app.get('/edit', (request, response) => {
     let hashedCookie = sha256(SALT + user_id);
 
     if (request.cookies.loggedIn === hashedCookie) {
-        const queryString = "SELECT * FROM expense WHERE user_id='" + request.cookies.userId + "'"
+        const queryString = "SELECT * FROM expense WHERE user_id='" + request.cookies.userId + "' ORDER BY expense.time_entered ASC"
         pool.query(queryString, (err, result) => {
             if (err) {
                 console.error('query error:', err);
@@ -233,6 +254,10 @@ app.get('/edit', (request, response) => {
     } else {
         response.send("Please Log In")
     }
+})
+
+app.get('/test', (request, response) => {
+
 })
 
 app.get('/editForm/:id', (request, response) => {
@@ -264,10 +289,15 @@ app.put("/edit/:id", (request, response) => {
         } else {
             console.log("This is what i updated")
             console.log(result.rows)
-            response.redirect('/edit')
+            response.redirect('/overview')
         }
     })
 });
+
+app.get('/navbar', (request, response) => {
+    // running this will let express to run home.handlebars file in your views folder
+    response.render('navbar')
+})
 
 //Listen to requests on port 3000
 const server = app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
