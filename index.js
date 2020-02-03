@@ -81,7 +81,7 @@ app.get('/overview', (request, response) => {
                 response.render('overview', data)
             }
         })
-    }else{
+    } else {
         response.send("Please Log In")
     }
 })
@@ -208,6 +208,65 @@ app.delete("/", (request, response) => {
         }
     })
 
+});
+
+app.get('/edit', (request, response) => {
+    // running this will let express to run home.handlebars file in your views folder
+    // running this will let express to run home.handlebars file in your views folder
+    let user_id = request.cookies.userId;
+    let hashedCookie = sha256(SALT + user_id);
+
+    if (request.cookies.loggedIn === hashedCookie) {
+        const queryString = "SELECT * FROM expense WHERE user_id='" + request.cookies.userId + "'"
+        pool.query(queryString, (err, result) => {
+            if (err) {
+                console.error('query error:', err);
+                response.send('query error');
+            } else {
+                let data = {
+                    allExpense: result.rows,
+                }
+                console.log(data);
+                response.render('edit', data)
+            }
+        })
+    } else {
+        response.send("Please Log In")
+    }
+})
+
+app.get('/editForm/:id', (request, response) => {
+    // running this will let express to run home.handlebars file in your views folder
+    let id = request.params.id
+    const data = {
+        id: id
+    }
+
+    response.render('editForm',data)
+})
+
+app.put("/edit/:id", (request, response) => {
+    //read the file in and write out to it
+    const queryText = "UPDATE expense SET category = $1, amount = $2, description = $3 WHERE id = $4 RETURNING *";
+
+    const values = [
+        request.body.category,
+        request.body.amount,
+        request.body.description,
+        request.params.id
+    ];
+
+    console.log(values)
+
+    pool.query(queryText, values, (err, result) => {
+        if (err) {
+            console.log("Error", err)
+        } else {
+            console.log("This is what i updated")
+            console.log(result.rows)
+            response.redirect('/edit')
+        }
+    })
 });
 
 //Listen to requests on port 3000

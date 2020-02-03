@@ -1,22 +1,21 @@
 
 var React = require('react');
 
-class overview extends React.Component {
+class edit extends React.Component {
   render() {
 
     const allExpense = this.props.allExpense;
 
     const allExpenseList = allExpense.map( expense => {
-        return (<form method="POST" action="/?_method=delete">
+        return (
                     <tr>
                         <input type = "hidden" name = "expenseId" value = {expense.id}/>
                         <td>{expense.category}</td>
                         <td>${expense.amount}</td>
                         <td>{expense.description}</td>
                         <td>{expense.time_entered.toString()}</td>
-                        <td><input type="submit" value="Delete"/></td>
+                        <td><a href ={`/editForm/${expense.id}`}><button>Edit</button></a></td>
                     </tr>
-                </form>
 )
     });
 <style>
@@ -32,12 +31,12 @@ class overview extends React.Component {
             <body>
                 <div>
                     <a href = "/"><button>Home</button></a>
-                    <h1>This is overview.jsx</h1>
+                    <h1>This is edit.jsx</h1>
                     <p>
                         Today's date:
                         <script> document.write(new Date().toLocaleDateString()); </script>
                     </p>
-                    <a href = "edit"><button>Edit</button></a>
+                    <a href = "overview"><button>Delete</button></a>
                     <table>
                         <tr>
                             <th>category</th>
@@ -57,4 +56,4 @@ class overview extends React.Component {
   }
 }
 
-module.exports = overview;
+module.exports = edit;
