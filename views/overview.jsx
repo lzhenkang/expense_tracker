@@ -42,6 +42,7 @@ class overview extends React.Component {
                         &nbsp;
                         <a href ={`/overview/${parseInt(this.props.offset) + 1}`}><button>  Next Day  </button></a>
                         <br/>
+                        Total expenses for today:&nbsp;${this.props.total}
                     </p>
 
                     <table class="table table-bordered">

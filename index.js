@@ -81,7 +81,8 @@ app.get('/overview/:offset', (request, response) => {
 
     if (request.cookies.loggedIn === hashedCookie) {
         const queryString =
-        "SELECT * FROM expense " +
+
+        "SELECT *, (SELECT SUM(amount) FROM expense WHERE user_id='" + request.cookies.userId + "' AND time_entered >= current_date + interval '"+ lowerOffset +" day' AND time_entered < current_date + interval '"+ upperOffset +" day') AS total FROM expense " +
         "WHERE user_id='" + request.cookies.userId + "' " +
         "AND time_entered >= current_date + interval '"+ lowerOffset +" day' " +
         "AND time_entered < current_date + interval '"+ upperOffset +" day' "+
@@ -92,11 +93,15 @@ app.get('/overview/:offset', (request, response) => {
                 console.error('query error:', err);
                 response.send('query error');
             } else {
+                var total = (result.rows.length <= 0) ? 0 : result.rows[0].total
+
                 let data = {
                     allExpense: result.rows,
                     offset: offset,
-                    date: dateString
+                    date: dateString,
+                    total: total
                 }
+
                 // data.allExpense.sort()
                 // console.log(data);
                 response.render('overview', data)
