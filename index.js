@@ -82,7 +82,14 @@ app.get('/', (request, response) => {
 
 app.get('/addExpense', (request, response) => {
     // running this will let express to run home.handlebars file in your views folder
-    response.render('expense')
+        let user_id = request.cookies.userId;
+    let hashedCookie = sha256(SALT + user_id);
+
+    if (request.cookies.loggedIn === hashedCookie) {
+        response.render('expense')
+    }else{
+        response.redirect('login')
+    }
 })
 
 app.get('/overview', (request, response) => {
