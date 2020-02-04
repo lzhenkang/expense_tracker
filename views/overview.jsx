@@ -15,10 +15,11 @@ class overview extends React.Component {
                         <td>{expense.description}</td>
                         <td>{expense.time_entered.toString().split(" ").slice(0, 4).join(" ")}</td>
                         <td>
-                        <a href ={`/editForm/${expense.id}`}><button>  Edit  </button></a>
+                        <a href ={`/editForm/${expense.id}`}><button type="button" class="btn btn-primary btn-sm d-block p-2">Edit</button></a>
+                        &nbsp;
                         <form method="POST" action="/?_method=delete">
                         <input type = "hidden" name = "expenseId" value = {expense.id}/>
-                        <input type="submit" value="Delete"/>
+                        <button type="submit" class="btn btn-primary btn-sm d-block p-2">Delete</button>
                         </form>
                         </td>
                     </tr>
@@ -34,15 +35,15 @@ class overview extends React.Component {
             <body>
                 <div class="container">
                     <Navbar />
-                    <h1>This is overview.jsx</h1>
+                    <h1>Overview</h1>
                     <p>
-                        Viewing expenses for date:&nbsp;{this.props.date}
+                        <h4>Viewing expenses for date:&nbsp;{this.props.date}</h4>
                         <br/>
-                        <a href ={`/overview/${parseInt(this.props.offset) - 1}`}><button>  Previous Day  </button></a>
+                        <a href ={`/overview/${parseInt(this.props.offset) - 1}`}><button type="button" class="btn btn-primary btn-lg">Previous Day</button></a>
                         &nbsp;
-                        <a href ={`/overview/${parseInt(this.props.offset) + 1}`}><button>  Next Day  </button></a>
+                        <a href ={`/overview/${parseInt(this.props.offset) + 1}`}><button type="button" class="btn btn-primary btn-lg">Next Day</button></a>
                         <br/>
-                        Total expenses for today:&nbsp;${this.props.total}
+                        <h4>Total expenses for today:&nbsp;${this.props.total}</h4>
                     </p>
 
                     <table class="table table-bordered">

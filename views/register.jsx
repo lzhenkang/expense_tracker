@@ -19,7 +19,7 @@ class Register extends React.Component {
 
                         <div className="fadeIn first">
                         {/*<img src="#" id="icon" alt="User Icon" />*/}
-                            <div>Sign In</div>
+                            <div>Register</div>
                         </div>
 
                         <form action="/register" method="POST">
@@ -29,7 +29,7 @@ class Register extends React.Component {
                         </form>
 
                         <div id="formFooter">
-                            <a className="underlineHover" href="/register">Not a user? Register now!</a>
+                            <a className="underlineHover" href="/login">Already a user? Sign in now!</a>
                         </div>
 
                     </div>

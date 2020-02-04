@@ -19,7 +19,7 @@ class Login extends React.Component {
 
                         <div className="fadeIn first">
                         {/*<img src="#" id="icon" alt="User Icon" />*/}
-                            <div>Register</div>
+                            <div>Sign in</div>
                         </div>
 
                         <form action="/login" method="POST">
