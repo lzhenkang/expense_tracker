@@ -28,13 +28,35 @@ app.use(methodOverride('_method'));
 
 const pg = require('pg');
 
+const url = require('url');
+
+var configs;
+
+if( process.env.DATABASE_URL ){
+
+    const params = url.parse(process.env.DATABASE_URL);
+  const auth = params.auth.split(':');
+
+  //make the configs object
+  configs = {
+    user: auth[0],
+    password: auth[1],
+    host: params.hostname,
+    port: params.port,
+    database: params.pathname.split('/')[1],
+    ssl: true
+  };
+
+  }else{
+
 // Initialise postgres client
-const config = {
+config = {
     user: 'leowzhenkang',
     host: '127.0.0.1',
     database: 'expense_tracker',
     port: 5432
 };
+}
 
 const pool = new pg.Pool(config);
 
@@ -305,6 +327,8 @@ app.get('/navbar', (request, response) => {
 })
 
 //Listen to requests on port 3000
+const PORT = process.env.PORT || 3000;
+
 const server = app.listen(3000, () => console.log('~~~ Tuning in to the waves of port 3000 ~~~'));
 
 let onClose = function() {

@@ -4,7 +4,6 @@ CREATE TABLE IF NOT EXISTS members (
     password TEXT
 );
 
-DROP TABLE IF EXISTS expense;
 CREATE TABLE IF NOT EXISTS expense (
     id SERIAL PRIMARY KEY,
     user_id TEXT,
