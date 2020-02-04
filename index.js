@@ -80,6 +80,11 @@ app.get('/', (request, response) => {
     response.render('home')
 })
 
+app.get('/test', (request, response) => {
+    // running this will let express to run home.handlebars file in your views folder
+    response.render('test')
+})
+
 app.get('/addExpense', (request, response) => {
     // running this will let express to run home.handlebars file in your views folder
         let user_id = request.cookies.userId;

@@ -7,7 +7,7 @@ class Navbar extends React.Component {
                     <div>
                         <nav class="navbar navbar-expand-lg navbar-light bg-light">
                         {/*<nav class="navbar navbar-dark bg-primary">*/}
-                            <a class="navbar-brand" href="/">Expense Tracker</a>
+                            <a class="navbar-brand" href="/"><img src="/img/investment.svg" width="60" height="60" className="d-inline-block align-center" alt="" />Expense Tracker</a>
                             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                                 <span class="navbar-toggler-icon"></span>
                             </button>
