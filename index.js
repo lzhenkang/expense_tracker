@@ -50,7 +50,7 @@ if( process.env.DATABASE_URL ){
   }else{
 
 // Initialise postgres client
-config = {
+configs = {
     user: 'leowzhenkang',
     host: '127.0.0.1',
     database: 'expense_tracker',
@@ -58,7 +58,7 @@ config = {
 };
 }
 
-const pool = new pg.Pool(config);
+const pool = new pg.Pool(configs);
 
 pool.on('error', function(err) {
     console.log('idle client error', err.message, err.stack);
