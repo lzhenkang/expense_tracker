@@ -195,7 +195,7 @@ app.post('/register', (request, response) => {
             console.log("error", err);
             response.send("error")
         } else {
-            response.send("New account created!")
+            response.redirect("/login")
         }
     });
 });
@@ -217,7 +217,7 @@ app.post('/login', (request, response) => {
         } else {
 
             if (result.rows.length === 0) {
-                response.send("EMPTY RESULT");
+                response.redirect("/login");
             } else {
 
                 // hash the request, if its the same as db
