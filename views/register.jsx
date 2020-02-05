@@ -25,7 +25,7 @@ class Register extends React.Component {
 
                         <form action="/register" method="POST">
                             <input type="text" id="login" className="fadeIn second" name="name" placeholder="login"/>
-                            <input type="text" id="password" className="fadeIn third" name="password" placeholder="password"/>
+                            <input type="password" id="password" className="fadeIn third" name="password" placeholder="password"/>
                             <input type="submit" className="fadeIn fourth" value="Log In"/>
                         </form>
 
